@@ -1,67 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Brandy</title>
 
 <style>
-    body {
-        margin: 0;
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: url('graduation.jpg') center/cover no-repeat;
-        font-family: Georgia, serif;
-        color: white;
-        text-align: center;
-    }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("graduation.jpg") center/cover no-repeat;
+    font-family: Georgia, serif;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+  }
 
-    .card {
-        background: rgba(0, 0, 0, 0.6);
-        padding: 40px;
-        border-radius: 25px;
-        width: 75%;
-        max-width: 850px;
-        backdrop-filter: blur(6px);
-        animation: fadeIn 2s ease;
-        z-index: 2;
-    }
+  .card {
+    background: rgba(0, 0, 0, 0.58);
+    padding: 40px;
+    border-radius: 25px;
+    width: 75%;
+    max-width: 850px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 30px rgba(255,255,255,0.25);
+    animation: fadeIn 2s ease;
+    z-index: 2;
+  }
 
-    h1 {
-        font-size: 55px;
-        letter-spacing: 8px;
-        margin-bottom: 25px;
-    }
+  h1 {
+    font-size: 55px;
+    letter-spacing: 8px;
+    margin-bottom: 25px;
+  }
 
-    p {
-        font-size: 24px;
-        line-height: 1.8;
-        white-space: pre-line;
-    }
+  .poem {
+    font-size: 23px;
+    line-height: 1.8;
+    white-space: pre-line;
+  }
 
-    canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 1;
-    }
+  .letter {
+    font-weight: bold;
+    font-size: 30px;
+    color: gold;
+  }
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(25px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(25px);
     }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 </style>
 </head>
 
@@ -70,16 +77,16 @@
 <canvas id="fireworks"></canvas>
 
 <div class="card">
-    <h1>BRANDY</h1>
+  <h1>BRANDY</h1>
 
-    <p>
-Beyond these halls, your story only starts
-Radiating laughter even through hard days
-Always carrying light into the lives around you
-Never afraid to dream louder than fear
-Destined for horizons wider than this moment
-Years from now, may you still remember who you were here
-    </p>
+  <div class="poem">
+<span class="letter">B</span>eyond these halls, your story only starts
+<span class="letter">R</span>adiating laughter even through hard days
+<span class="letter">A</span>lways carrying light into the lives around you
+<span class="letter">N</span>ever afraid to dream louder than fear
+<span class="letter">D</span>estined for horizons wider than this moment
+<span class="letter">Y</span>ears from now, may you still remember who you were here
+  </div>
 </div>
 
 <script>
@@ -92,50 +99,52 @@ canvas.height = window.innerHeight;
 let particles = [];
 
 function createFirework() {
-    const x = Math.random() * canvas.width;
-    const y = Math.random() * canvas.height * 0.5;
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height * 0.45;
 
-    for (let i = 0; i < 70; i++) {
-        particles.push({
-            x: x,
-            y: y,
-            angle: Math.random() * Math.PI * 2,
-            speed: Math.random() * 5 + 2,
-            radius: Math.random() * 2 + 1,
-            life: 100,
-            color: `hsl(${Math.random() * 360}, 100%, 60%)`
-        });
-    }
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x: x,
+      y: y,
+      angle: Math.random() * Math.PI * 2,
+      speed: Math.random() * 5 + 2,
+      radius: Math.random() * 2 + 1,
+      life: 100,
+      color: `hsl(${Math.random() * 360}, 100%, 60%)`
+    });
+  }
 }
 
 function animateFireworks() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    particles.forEach((p, index) => {
-        p.x += Math.cos(p.angle) * p.speed;
-        p.y += Math.sin(p.angle) * p.speed;
-        p.speed *= 0.96;
-        p.life--;
+  particles.forEach((p, index) => {
+    p.x += Math.cos(p.angle) * p.speed;
+    p.y += Math.sin(p.angle) * p.speed;
+    p.speed *= 0.97;
+    p.life--;
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.life / 100;
+    ctx.fill();
 
-        if (p.life <= 0) {
-            particles.splice(index, 1);
-        }
-    });
+    if (p.life <= 0) {
+      particles.splice(index, 1);
+    }
+  });
 
-    requestAnimationFrame(animateFireworks);
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animateFireworks);
 }
 
 setInterval(createFirework, 900);
 animateFireworks();
 
 window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 });
 </script>
 
